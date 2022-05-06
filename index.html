@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--<script type="text/javascript" src="https://mozilla.github.io/pdf.js/build/pdf.js"></script> -->
+		<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js"></script>
+	</head>
+		<!-- <body onLoad="pdfRender();"> -->
+	<body onLoad="pdfRender();">
+		<center> <div id="holder"></canvas> </center>
+		<!--  <button onclick="pdfRender()">Render PDF</button> -->
+	</body>
+			<script>
+				function pdfRender(){
+						renderPDF('./applied sciences.pdf',document.getElementById("holder"));
+				}
+				
+				function renderPDF(url,canvasContainer){
+					var options = {scale:1.7};
+					
+					function renderPage(page){
+						var viewport = page.getViewport(options.scale);
+						
+						var canvas = document.createElement('canvas');
+						var ctx = canvas.getContext("2d");
+						var renderContext = {
+							canvasContext: ctx,
+							viewport: viewport
+						};
+						
+						canvas.height = viewport.height;
+						canvas.width = viewport.width;
+						canvasContainer.appendChild(canvas);
+						page.render(renderContext);
+
+					}
+					
+					function renderPages(pdfDoc){
+						for(var num=1;num<=pdfDoc.numPages;num++)
+							pdfDoc.getPage(num).then(renderPage);
+					}
+					
+					pdfjsLib.disableWorker = true;
+					pdfjsLib.getDocument(url).then(renderPages);
+					
+					
+				}
+				
+			</script>
+
+</html>
