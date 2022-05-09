@@ -10,4 +10,3 @@
 Input a list of words, listen their spellings and type, Check with the button to verify your answers
 
 ### Input
-
